@@ -7,7 +7,9 @@ import (
 	"os"
 )
 
-func Server() {
+var PORT = ":8000"
+
+func Server() error {
 	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
 		for key, values := range r.Header {
 			for _, v := range values {
@@ -31,9 +33,14 @@ func Server() {
 		w.WriteHeader(http.StatusOK)
 		io.WriteString(w, "health")
 	})
-	http.ListenAndServe(":8000", nil)
+	return http.ListenAndServe(PORT, nil)
 }
 
 func main() {
-	Server()
+	fmt.Println("start server...")
+	fmt.Printf("port is ...%s\n", PORT)
+	err := Server()
+	fmt.Println(err.Error())
+
+	fmt.Println("start end...")
 }
